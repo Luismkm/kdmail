@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+node_modules/
+build/
+temp/
+migrations/
+
+.env
+coverage
+ormconfig.json
+
+
+
+
