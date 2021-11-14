@@ -3,9 +3,7 @@ import path from 'path';
 
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import IClientsRepository from '@modules/clients/repositories/IClientsRepository';
-// import IClientRepository from '../repositories/IClientRepository';
-
-// import Client from '../infra/typeorm/entities/Client';
+import ILogsErrorRepository from '@modules/logs/repositories/ILogsErrorRepository';
 
 interface IRequest {
   subject: string;
@@ -26,6 +24,9 @@ class SendEmailService {
 
     @inject('MailProvider')
     private mailProvider: IMailProvider,
+
+    @inject('LogsErrorRepository')
+    private logsErrorRepository: ILogsErrorRepository,
   ) {}
 
   async handleSend(client: IClient, subject: string, linkImg: string) {
@@ -52,7 +53,7 @@ class SendEmailService {
       });
       await this.clientsRepository.updateStatusSended(client.cod);
     } catch (error: any) {
-      console.log(error.message);
+      await this.logsErrorRepository.create(client.cod, error.message);
     }
   }
 
