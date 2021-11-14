@@ -51,9 +51,10 @@ class SendEmailService {
           },
         },
       });
-      await this.clientsRepository.updateStatusSended(client.cod);
+      await this.clientsRepository.updateStatusSended(client.cod, 'Y');
     } catch (error: any) {
       await this.logsErrorRepository.create(client.cod, error.message);
+      await this.clientsRepository.updateStatusSended(client.cod, 'C');
     }
   }
 
