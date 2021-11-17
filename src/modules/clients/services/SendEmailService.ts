@@ -30,22 +30,21 @@ class SendEmailService {
   ) {}
 
   async handleSend(client: IClient, subject: string, linkImg: string) {
-    const forgotPasswordTemplate = path.resolve(
+    const emailTemplate = path.resolve(
       __dirname,
       '..',
       'views',
-      'forgot_password.hbs',
+      'email_template.hbs',
     );
 
     try {
       await this.mailProvider.sendMail({
         to: {
-          name: 'a',
           email: client.email,
         },
         subject,
         templateData: {
-          file: forgotPasswordTemplate,
+          file: emailTemplate,
           variables: {
             linkImg,
           },
@@ -67,18 +66,9 @@ class SendEmailService {
       Number(numberOfSends),
     );
 
-    /*  clients.map(client => {
-      console.log(client);
-    }); */
-    /* clients.forEach(client => {
-      this.handleSend(client, subject, linkImg);
-    }); */
-
     await Promise.all(
-      clients.map(async client => this.handleSend(client, subject, linkImg)),
+      clients.map(client => this.handleSend(client, subject, linkImg)),
     );
-
-    // await this.handleSend(clients[0], subject, linkImg);
   }
 }
 

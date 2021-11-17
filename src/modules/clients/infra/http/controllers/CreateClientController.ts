@@ -4,6 +4,11 @@ import readline from 'readline';
 import { container } from 'tsyringe';
 import CreateClientService from '@modules/clients/services/CreateClientService';
 
+interface IClient {
+  cod: string;
+  email: string;
+}
+
 export default class CreateClientController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { file } = request;
@@ -22,8 +27,7 @@ export default class CreateClientController {
 
     const createClientService = container.resolve(CreateClientService);
 
-    const clientsWithValidEmail = [];
-    const errarr = [];
+    const clientsWithValidEmail: IClient[] = [];
 
     for await (const line of clients) {
       const clientSplit = line.split(';');
@@ -43,15 +47,11 @@ export default class CreateClientController {
             cod,
             email: emailWithoutSpaces,
           });
-        } else {
-          errarr.push(emailWithoutSpaces);
         }
       }
     }
 
     await createClientService.execute({ clients: clientsWithValidEmail });
-    // console.log(newarr);
-    // console.log(errarr.filter(Boolean));
 
     return response.status(204).json();
   }

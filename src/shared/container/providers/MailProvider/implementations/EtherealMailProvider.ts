@@ -22,6 +22,9 @@ export default class EtherealMailProvider implements IMailProvider {
           user: account.user,
           pass: account.pass,
         },
+        tls: {
+          rejectUnauthorized: false,
+        },
       });
       this.client = transporter;
     });
@@ -35,8 +38,8 @@ export default class EtherealMailProvider implements IMailProvider {
   }: ISendMailDTO): Promise<void> {
     const message = await this.client.sendMail({
       from: {
-        name: from?.name || 'CDC Distribuidora',
-        address: from?.email || 'equipe@distribuidorcdc.com.br',
+        name: from?.name || 'Distribuidora',
+        address: from?.email || 'equipe@distribuidora.com',
       },
       to: {
         name: to?.name,

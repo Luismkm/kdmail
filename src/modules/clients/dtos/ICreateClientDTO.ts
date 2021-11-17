@@ -3,5 +3,5 @@ interface IData {
   email: string;
 }
 export default interface ICreateClientDTO {
-  clients: IData[];
+  clientsWithoutException: IData[];
 }
