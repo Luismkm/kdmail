@@ -4,10 +4,11 @@ import path from 'path';
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import IClientsRepository from '@modules/clients/repositories/IClientsRepository';
 import ILogsErrorRepository from '@modules/logs/repositories/ILogsErrorRepository';
+import { CronJob } from 'cron';
 
 interface IRequest {
-  subject: string;
-  linkImg: string;
+  emailSubject: string;
+  linkImgBanner: string;
   numberOfSends: string;
 }
 
@@ -58,17 +59,50 @@ class SendEmailService {
   }
 
   public async execute({
-    subject,
-    linkImg,
+    emailSubject,
+    linkImgBanner,
     numberOfSends,
   }: IRequest): Promise<void> {
     const clients = await this.clientsRepository.findAllClients(
       Number(numberOfSends),
     );
 
-    await Promise.all(
-      clients.map(client => this.handleSend(client, subject, linkImg)),
+    let inicial = 0;
+    const final = clients.length - 1;
+
+    const jobNight = new CronJob(
+      '*/05 14 15 * * *',
+      async () => {
+        if (inicial > final) {
+          jobNight.stop();
+        } else {
+          await this.handleSend(clients[inicial], emailSubject, linkImgBanner);
+          // console.log('ENVIADO EMAIL NIGHT', inicial);
+          inicial += 1;
+        }
+      },
+      null,
+      true,
+      'America/Sao_Paulo',
     );
+
+    const jobDay = new CronJob(
+      '*/5 17 13 * * *',
+      async () => {
+        if (inicial > final) {
+          jobDay.stop();
+        } else {
+          await this.handleSend(clients[inicial], emailSubject, linkImgBanner);
+          // console.log('ENVIADO EMAIL DAY', inicial);
+          inicial += 1;
+        }
+      },
+      null,
+      true,
+      'America/Sao_Paulo',
+    );
+    jobNight.start();
+    jobDay.start();
   }
 }
 

@@ -1,28 +1,37 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { Readable } from 'stream';
-import readline from 'readline';
 
 import SendEmailService from '@modules/clients/services/SendEmailService';
-
-/* interface Client {
-  cod: string;
-  cnpj: string;
-  email: string;
-  situation: string;
-} */
+import StatusEmailService from '@modules/clients/services/StatusEmailService';
+import DeleteClientListService from '@modules/clients/services/DeleteClientListService';
 
 export default class SendEmailController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { subject, linkImg, numberOfSends } = request.body;
+    const { emailSubject, linkImgBanner, numberOfSends } = request.body;
 
     const sendEmail = container.resolve(SendEmailService);
 
     await sendEmail.execute({
-      subject,
-      linkImg,
+      emailSubject,
+      linkImgBanner,
       numberOfSends,
     });
+
+    return response.status(204).json();
+  }
+
+  public async show(request: Request, response: Response): Promise<Response> {
+    const statusEmail = container.resolve(StatusEmailService);
+
+    const status = await statusEmail.execute();
+
+    return response.status(200).json({ status });
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const clearList = container.resolve(DeleteClientListService);
+
+    await clearList.execute();
 
     return response.status(204).json();
   }

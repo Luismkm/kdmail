@@ -12,6 +12,7 @@ interface IClient {
 export default class CreateClientController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { file } = request;
+
     const { buffer } = file;
 
     const readableFile = new Readable();
@@ -51,8 +52,10 @@ export default class CreateClientController {
       }
     }
 
-    await createClientService.execute({ clients: clientsWithValidEmail });
+    const recipientNumbers = await createClientService.execute({
+      clients: clientsWithValidEmail,
+    });
 
-    return response.status(204).json();
+    return response.status(200).json({ recipientNumbers });
   }
 }

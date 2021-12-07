@@ -3,6 +3,7 @@ import { getRepository, Repository } from 'typeorm';
 import IClientsRepository from '@modules/clients/repositories/IClientsRepository';
 import ICreateClientDTO from '@modules/clients/dtos/ICreateClientDTO';
 
+import IStatusDTO from '@modules/clients/dtos/IFindAllClientsGroupByStatusDTO';
 import Client from '../entities/Client';
 
 class ClientsRepository implements IClientsRepository {
@@ -14,7 +15,7 @@ class ClientsRepository implements IClientsRepository {
 
   public async create({
     clientsWithoutException,
-  }: ICreateClientDTO): Promise<Client> {
+  }: ICreateClientDTO): Promise<number> {
     const clientsData = this.ormRepository.create(clientsWithoutException);
 
     await this.ormRepository.save(clientsData);
@@ -35,6 +36,17 @@ class ClientsRepository implements IClientsRepository {
       cod,
       sended: status,
     });
+  }
+
+  public async findAllClientsGroupByStatus(): Promise<IStatusDTO[]> {
+    const status = await this.ormRepository.query(
+      'select COUNT(*),sended FROM clients group by sended ',
+    );
+    return status;
+  }
+
+  public async deleteAllClients(): Promise<void> {
+    await this.ormRepository.clear();
   }
 }
 

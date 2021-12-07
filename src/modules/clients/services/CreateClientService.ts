@@ -22,7 +22,7 @@ class CreateClientService {
     private clientsExceptionRepository: IClientsExceptionRepository,
   ) {}
 
-  public async execute({ clients }: IRequest): Promise<Client> {
+  public async execute({ clients }: IRequest): Promise<number> {
     const clientsExceptionList =
       await this.clientsExceptionRepository.findAllClientsException();
 
@@ -33,7 +33,8 @@ class CreateClientService {
     );
 
     await this.clientsRepository.create({ clientsWithoutException });
-    return null;
+
+    return clientsWithoutException.length;
   }
 }
 
