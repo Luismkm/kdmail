@@ -9,6 +9,9 @@ import ClientsRepository from '@modules/clients/infra/typeorm/repositories/Clien
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRerpositories';
 
+import ITasksRepository from '@modules/tasks/repositories/ITaskRepository';
+import TasksRepository from '@modules/tasks/infra/typeorm/repositories/TasksRepositories';
+
 import IClientsExceptionRepository from '@modules/clientsException/repositories/IClientsExceptionRepository';
 import ClientsExceptionRepository from '@modules/clientsException/infra/typeorm/repositories/ClientsExceptionRepository';
 
@@ -23,6 +26,11 @@ container.registerSingleton<IClientsRepository>(
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
+);
+
+container.registerSingleton<ITasksRepository>(
+  'TasksRepository',
+  TasksRepository,
 );
 
 container.registerSingleton<IClientsExceptionRepository>(
