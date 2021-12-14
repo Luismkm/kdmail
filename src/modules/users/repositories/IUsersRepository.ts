@@ -1,5 +1,7 @@
 import User from '../infra/typeorm/entities/User';
 
+import ICreateUserDTO from '../dtos/ICreateUserDTO';
+
 export default interface IClientsRepository {
-  create(data: any): Promise<User>;
+  create(data: ICreateUserDTO): Promise<User>;
 }
