@@ -2,6 +2,7 @@ import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import { injectable, inject } from 'tsyringe';
 
+import AppError from '@shared/errors/AppError';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
@@ -31,7 +32,7 @@ class AuthenticateUserService {
     const user = await this.usersRepository.findByName(name);
 
     if (!user) {
-      throw new Error('Incorrect name/password combination.');
+      throw new AppError('Incorrect name/password combination.', 401);
     }
 
     const passwordMatched = await this.hashProvider.compareHash(
@@ -40,7 +41,7 @@ class AuthenticateUserService {
     );
 
     if (!passwordMatched) {
-      throw new Error('Incorrect name/password combination.');
+      throw new AppError('Incorrect name/password combination.', 401);
     }
 
     const { secret, expiresIn } = authConfig.jwt;
