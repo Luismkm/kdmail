@@ -13,11 +13,20 @@ class TasksRepository implements ITasksRepository {
   }
 
   public async create(task: ICreateTaskDTO): Promise<Task> {
-    const userData = this.ormRepository.create(task);
+    const taskData = this.ormRepository.create(task);
 
-    await this.ormRepository.save(userData);
+    await this.ormRepository.save(taskData);
 
-    return userData;
+    return taskData;
+  }
+
+  public async findAll(status: string): Promise<Task[]> {
+    const tasksList = this.ormRepository.find({
+      where: {
+        status,
+      },
+    });
+    return tasksList;
   }
 }
 
