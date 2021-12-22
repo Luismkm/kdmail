@@ -21,12 +21,26 @@ class TasksRepository implements ITasksRepository {
   }
 
   public async findAll(status: string): Promise<Task[]> {
-    const tasksList = this.ormRepository.find({
+    const tasksList = await this.ormRepository.find({
       where: {
         status,
       },
+      relations: ['user'],
     });
+    tasksList.forEach(task => {
+      delete task.user.password;
+    });
+
     return tasksList;
+  }
+
+  public async updateDescription(
+    id_task: string,
+    description: string,
+  ): Promise<Task> {
+    const task = await this.ormRepository.save({ id: id_task, description });
+    console.log(task);
+    return task;
   }
 }
 

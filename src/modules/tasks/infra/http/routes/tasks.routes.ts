@@ -8,6 +8,7 @@ const tasksController = new TasksController();
 tasksRouter.use(ensureAuthenticated);
 
 tasksRouter.post('/create', tasksController.create);
+tasksRouter.patch('/update/:task_id/:description', tasksController.update);
 tasksRouter.get('/list', tasksController.show);
 
 export default tasksRouter;
