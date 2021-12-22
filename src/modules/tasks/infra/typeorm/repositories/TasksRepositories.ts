@@ -39,7 +39,6 @@ class TasksRepository implements ITasksRepository {
     description: string,
   ): Promise<Task> {
     const task = await this.ormRepository.save({ id: id_task, description });
-    console.log(task);
     return task;
   }
 }

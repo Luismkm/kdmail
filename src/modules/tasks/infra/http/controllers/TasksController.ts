@@ -31,7 +31,6 @@ export default class TasksController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { task_id, description } = request.params;
-    console.log(task_id, description);
 
     const task = container.resolve(UpdateDescriptionTaskService);
     const updatedTask = await task.execute(task_id, description);
