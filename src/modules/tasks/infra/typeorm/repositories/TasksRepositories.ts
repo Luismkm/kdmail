@@ -44,6 +44,10 @@ class TasksRepository implements ITasksRepository {
     const task = await this.ormRepository.save({ id: task_id, status });
     return task;
   }
+
+  public async delete(task_id: string): Promise<void> {
+    await this.ormRepository.delete(task_id);
+  }
 }
 
 export default TasksRepository;

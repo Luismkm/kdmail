@@ -13,6 +13,7 @@ tasksRouter.use(ensureAuthenticated);
 
 tasksRouter.post('/create', tasksController.create);
 tasksRouter.get('/list', tasksController.index);
+tasksRouter.delete('/delete/:task_id', tasksController.delete);
 
 tasksRouter.patch(
   '/update/description',
