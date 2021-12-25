@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
 
 @Entity('tasks')
@@ -26,8 +27,11 @@ class Tasks {
   @Column()
   status: string;
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
 
 export default Tasks;
