@@ -20,7 +20,7 @@ export default class SendEmailController {
     return response.status(204).json();
   }
 
-  public async show(request: Request, response: Response): Promise<Response> {
+  public async index(request: Request, response: Response): Promise<Response> {
     const statusEmail = container.resolve(StatusEmailService);
 
     const status = await statusEmail.execute();

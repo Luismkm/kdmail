@@ -20,7 +20,7 @@ export default class TasksController {
     return response.status(200).json({ createdTask });
   }
 
-  public async show(request: Request, response: Response): Promise<Response> {
+  public async index(request: Request, response: Response): Promise<Response> {
     const tasksList = container.resolve(ShowTaskServices);
     const tasks = await tasksList.execute();
 

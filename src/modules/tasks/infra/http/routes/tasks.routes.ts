@@ -12,7 +12,7 @@ const updateTaskStatusController = new UpdateTaskStatusController();
 tasksRouter.use(ensureAuthenticated);
 
 tasksRouter.post('/create', tasksController.create);
-tasksRouter.get('/list', tasksController.show);
+tasksRouter.get('/list', tasksController.index);
 
 tasksRouter.patch(
   '/update/description',
