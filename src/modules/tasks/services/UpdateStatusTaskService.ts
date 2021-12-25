@@ -10,17 +10,15 @@ interface IRequest {
 }
 
 @injectable()
-class ShowTaskServices {
+export default class UpdateStatusTaskService {
   constructor(
     @inject('TasksRepository')
     private tasksRepository: ITasksRepository,
   ) {}
 
-  public async execute(): Promise<Task[]> {
-    const tasksList = await this.tasksRepository.findAllOpenTasks();
+  public async execute(task_id: string, status: string): Promise<Task> {
+    const task = await this.tasksRepository.updateStatus(task_id, status);
 
-    return tasksList;
+    return task;
   }
 }
-
-export default ShowTaskServices;

@@ -4,6 +4,7 @@ import ICreateTaskDTO from '../dtos/ICreateTaskDTO';
 
 export default interface ITasksRepository {
   create(data: ICreateTaskDTO): Promise<Tasks>;
-  findAll(status: string): Promise<Tasks[]>;
-  updateDescription(id_task: string, description: string): Promise<Tasks>;
+  findAllOpenTasks(): Promise<Tasks[]>;
+  updateDescription(task_id: string, description: string): Promise<Tasks>;
+  updateStatus(task_id: string, status: string): Promise<Tasks>;
 }

@@ -20,11 +20,9 @@ class TasksRepository implements ITasksRepository {
     return taskData;
   }
 
-  public async findAll(status: string): Promise<Task[]> {
+  public async findAllOpenTasks(): Promise<Task[]> {
     const tasksList = await this.ormRepository.find({
-      where: {
-        status,
-      },
+      where: [{ status: 'Pendente' }, { status: 'Em andamento' }],
       relations: ['user'],
     });
     tasksList.forEach(task => {
@@ -35,10 +33,15 @@ class TasksRepository implements ITasksRepository {
   }
 
   public async updateDescription(
-    id_task: string,
+    task_id: string,
     description: string,
   ): Promise<Task> {
-    const task = await this.ormRepository.save({ id: id_task, description });
+    const task = await this.ormRepository.save({ id: task_id, description });
+    return task;
+  }
+
+  public async updateStatus(task_id: string, status: string): Promise<Task> {
+    const task = await this.ormRepository.save({ id: task_id, status });
     return task;
   }
 }
