@@ -1,7 +1,7 @@
 import {
   Entity,
   Column,
-  UpdateDateColumn,
+  CreateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -19,7 +19,7 @@ class Users {
   @Column()
   role: string;
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
   created_at: Date;
 }
 

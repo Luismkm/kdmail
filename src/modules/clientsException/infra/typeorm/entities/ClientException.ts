@@ -1,4 +1,4 @@
-import { Entity, Column, UpdateDateColumn, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, CreateDateColumn } from 'typeorm';
 
 @Entity('clients_exception')
 class ClientException {
@@ -8,7 +8,7 @@ class ClientException {
   @Column()
   email: string;
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
   created_at: Date;
 }
 

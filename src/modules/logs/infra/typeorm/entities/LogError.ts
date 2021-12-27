@@ -1,4 +1,4 @@
-import { Entity, Column, UpdateDateColumn, PrimaryColumn } from 'typeorm';
+import { Entity, Column, CreateDateColumn, PrimaryColumn } from 'typeorm';
 
 @Entity('logs_error')
 class LogsError {
@@ -11,7 +11,7 @@ class LogsError {
   @Column()
   email: string;
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
   created_at: Date;
 }
 

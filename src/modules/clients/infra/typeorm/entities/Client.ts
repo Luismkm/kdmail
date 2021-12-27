@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
-  PrimaryColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryColumn, CreateDateColumn } from 'typeorm';
 
 @Entity('clients')
 class Clients {
@@ -17,7 +11,7 @@ class Clients {
   @Column()
   sended: string;
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
   created_at: Date;
 }
 
