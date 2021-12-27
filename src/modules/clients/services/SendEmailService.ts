@@ -5,6 +5,7 @@ import IMailProvider from '@shared/container/providers/MailProvider/models/IMail
 import IClientsRepository from '@modules/clients/repositories/IClientsRepository';
 import ILogsErrorRepository from '@modules/logs/repositories/ILogsErrorRepository';
 import { CronJob } from 'cron';
+import { io } from '@shared/infra/http/app';
 
 interface IRequest {
   emailSubject: string;
@@ -31,6 +32,10 @@ class SendEmailService {
   ) {}
 
   async handleSend(client: IClient, subject: string, linkImg: string) {
+    const clientData = {
+      cod: client.cod,
+      email: client.email,
+    };
     const emailTemplate = path.resolve(
       __dirname,
       '..',
@@ -52,9 +57,13 @@ class SendEmailService {
         },
       });
       await this.clientsRepository.updateStatusSended(client.cod, 'Y');
+      Object.assign(clientData, { status: 'Sucesso' });
+      io.emit('new_client', clientData);
     } catch (error: any) {
       await this.logsErrorRepository.create(client.cod, error.message);
       await this.clientsRepository.updateStatusSended(client.cod, 'C');
+      Object.assign(clientData, { status: 'Erro' });
+      io.emit('new_client', clientData);
     }
   }
 
@@ -66,18 +75,16 @@ class SendEmailService {
     const clients = await this.clientsRepository.findAllClients(
       Number(numberOfSends),
     );
-
     let inicial = 0;
     const final = clients.length - 1;
 
     const jobNight = new CronJob(
-      '*/05 14 15 * * *',
+      '*/5 54 13 * * *',
       async () => {
         if (inicial > final) {
           jobNight.stop();
         } else {
           await this.handleSend(clients[inicial], emailSubject, linkImgBanner);
-          // console.log('ENVIADO EMAIL NIGHT', inicial);
           inicial += 1;
         }
       },
@@ -87,13 +94,12 @@ class SendEmailService {
     );
 
     const jobDay = new CronJob(
-      '*/5 17 13 * * *',
+      '*/5 12 10 * * *',
       async () => {
         if (inicial > final) {
           jobDay.stop();
         } else {
           await this.handleSend(clients[inicial], emailSubject, linkImgBanner);
-          // console.log('ENVIADO EMAIL DAY', inicial);
           inicial += 1;
         }
       },
