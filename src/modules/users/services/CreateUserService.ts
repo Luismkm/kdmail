@@ -19,7 +19,7 @@ class CreateUserService {
     private hashProvider: IHashProvider,
   ) {}
 
-  public async execute({ name, password, role }: IRequest): Promise<User> {
+  public async execute({ name, password, role = '' }: IRequest): Promise<User> {
     const hashedPassword = await this.hashProvider.generateHash(password);
     const createdUser = await this.usersRepository.create({
       name,
