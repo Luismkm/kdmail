@@ -1,4 +1,5 @@
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import User from '../infra/typeorm/entities/User';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
@@ -20,6 +21,12 @@ class CreateUserService {
   ) {}
 
   public async execute({ name, password, role = '' }: IRequest): Promise<User> {
+    const checkUserExists = await this.usersRepository.findByName(name);
+
+    if (checkUserExists) {
+      throw new AppError('Name already in use.', 403);
+    }
+
     const hashedPassword = await this.hashProvider.generateHash(password);
     const createdUser = await this.usersRepository.create({
       name,
