@@ -23,6 +23,9 @@ class TasksRepository implements ITasksRepository {
   public async findAllOpenTasks(): Promise<Task[]> {
     const tasksList = await this.ormRepository.find({
       where: [{ status: 'Pendente' }, { status: 'Em andamento' }],
+      order: {
+        created_at: 'ASC',
+      },
       relations: ['user'],
     });
     tasksList.forEach(task => {
