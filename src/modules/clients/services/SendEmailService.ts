@@ -6,6 +6,7 @@ import IClientsRepository from '@modules/clients/repositories/IClientsRepository
 import ILogsErrorRepository from '@modules/logs/repositories/ILogsErrorRepository';
 import { CronJob } from 'cron';
 import { io } from '@shared/infra/http/app';
+import IClientTokensRepository from '../repositories/IClientTokensRepository';
 
 interface IRequest {
   emailSubject: string;
@@ -24,6 +25,9 @@ class SendEmailService {
     @inject('ClientsRepository')
     private clientsRepository: IClientsRepository,
 
+    @inject('ClientTokensRepository')
+    private clientTokensRepository: IClientTokensRepository,
+
     @inject('MailProvider')
     private mailProvider: IMailProvider,
 
@@ -31,7 +35,12 @@ class SendEmailService {
     private logsErrorRepository: ILogsErrorRepository,
   ) {}
 
-  async handleSend(client: IClient, subject: string, linkImg: string) {
+  async handleSend(
+    client: IClient,
+    subject: string,
+    linkImg: string,
+    token: string,
+  ) {
     const clientData = {
       cod: client.cod,
       email: client.email,
@@ -53,6 +62,7 @@ class SendEmailService {
           file: emailTemplate,
           variables: {
             linkImg,
+            linkUnsubscribe: `${process.env.APP_WEB_URL}/unsubscribe?token=${token}`,
           },
         },
       });
@@ -75,16 +85,35 @@ class SendEmailService {
     const clients = await this.clientsRepository.findAllClients(
       Number(numberOfSends),
     );
+
     let inicial = 0;
     const final = clients.length - 1;
 
     const jobNight = new CronJob(
-      '*/5 54 13 * * *',
+      '*/5 58 12 * * *',
       async () => {
         if (inicial > final) {
           jobNight.stop();
         } else {
-          await this.handleSend(clients[inicial], emailSubject, linkImgBanner);
+          let clientToken = await this.clientTokensRepository.findTokenByCod(
+            clients[inicial].cod,
+          );
+
+          if (!clientToken) {
+            clientToken = await this.clientTokensRepository.generate(
+              clients[inicial].cod,
+              clients[inicial].email,
+            );
+          }
+
+          const { token } = clientToken;
+
+          await this.handleSend(
+            clients[inicial],
+            emailSubject,
+            linkImgBanner,
+            token,
+          );
           inicial += 1;
         }
       },
@@ -94,12 +123,30 @@ class SendEmailService {
     );
 
     const jobDay = new CronJob(
-      '*/5 12 10 * * *',
+      '*/5 25 22 * * *',
       async () => {
         if (inicial > final) {
           jobDay.stop();
         } else {
-          await this.handleSend(clients[inicial], emailSubject, linkImgBanner);
+          let clientToken = await this.clientTokensRepository.findTokenByCod(
+            clients[inicial].cod,
+          );
+
+          if (!clientToken) {
+            clientToken = await this.clientTokensRepository.generate(
+              clients[inicial].cod,
+              clients[inicial].email,
+            );
+          }
+
+          const { token } = clientToken;
+
+          await this.handleSend(
+            clients[inicial],
+            emailSubject,
+            linkImgBanner,
+            token,
+          );
           inicial += 1;
         }
       },

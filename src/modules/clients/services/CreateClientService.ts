@@ -1,6 +1,5 @@
-import IClientsExceptionRepository from '@modules/clientsException/repositories/IClientsExceptionRepository';
+import IUnsubscribesRepository from '@modules/unsubscribe/repositories/IUnsubscribesRepository';
 import { inject, injectable } from 'tsyringe';
-import Client from '../infra/typeorm/entities/Client';
 import IClientsRepository from '../repositories/IClientsRepository';
 
 interface IData {
@@ -18,23 +17,22 @@ class CreateClientService {
     @inject('ClientsRepository')
     private clientsRepository: IClientsRepository,
 
-    @inject('ClientsExceptionRepository')
-    private clientsExceptionRepository: IClientsExceptionRepository,
+    @inject('UnsubscribesRepository')
+    private unsubscribesRepository: IUnsubscribesRepository,
   ) {}
 
   public async execute({ clients }: IRequest): Promise<number> {
-    const clientsExceptionList =
-      await this.clientsExceptionRepository.findAllClientsException();
-
-    const clientsWithoutException = [].concat(
+    const unsubscribeList =
+      await this.unsubscribesRepository.findAllUnsubscribe();
+    const clientsWithoutUnsubscribe = [].concat(
       clients.filter(val =>
-        clientsExceptionList.every(val2 => val.email !== val2.email),
+        unsubscribeList.every(val2 => val.email !== val2.email),
       ),
     );
 
-    await this.clientsRepository.create({ clientsWithoutException });
+    await this.clientsRepository.create({ clientsWithoutUnsubscribe });
 
-    return clientsWithoutException.length;
+    return clientsWithoutUnsubscribe.length;
   }
 }
 

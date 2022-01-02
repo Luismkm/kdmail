@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn, CreateDateColumn } from 'typeorm';
 
-@Entity('clients_exception')
-class ClientException {
+@Entity('unsubscribe')
+class Unsubscribe {
   @PrimaryColumn()
   cod: string;
 
@@ -12,4 +12,4 @@ class ClientException {
   created_at: Date;
 }
 
-export default ClientException;
+export default Unsubscribe;

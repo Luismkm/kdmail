@@ -14,9 +14,9 @@ class ClientsRepository implements IClientsRepository {
   }
 
   public async create({
-    clientsWithoutException,
+    clientsWithoutUnsubscribe,
   }: ICreateClientDTO): Promise<number> {
-    const clientsData = this.ormRepository.create(clientsWithoutException);
+    const clientsData = this.ormRepository.create(clientsWithoutUnsubscribe);
 
     await this.ormRepository.save(clientsData);
 
