@@ -1,12 +1,12 @@
+import { injectable, inject } from 'tsyringe';
 import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
-import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '../repositories/IUsersRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import { User } from '../infra/typeorm/entities/User';
 
-import User from '../infra/typeorm/entities/User';
+import { ILoadUserByNameRepository } from '../repositories/ILoadUserByNameRepository';
+import { IHashCompare } from '../providers/HashProvider/models/IHashCompare';
 
 interface IRequest {
   name: string;
@@ -22,20 +22,20 @@ interface IResponse {
 class AuthenticateUserService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    private loadUser: ILoadUserByNameRepository,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider,
+    private hashProvider: IHashCompare,
   ) {}
 
   public async execute({ name, password }: IRequest): Promise<IResponse> {
-    const user = await this.usersRepository.findByName(name);
+    const user = await this.loadUser.load(name);
 
     if (!user) {
       throw new AppError('Incorrect name/password combination.', 401);
     }
 
-    const passwordMatched = await this.hashProvider.compareHash(
+    const passwordMatched = await this.hashProvider.hashCompare(
       password,
       user.password,
     );
@@ -58,4 +58,4 @@ class AuthenticateUserService {
   }
 }
 
-export default AuthenticateUserService;
+export { AuthenticateUserService };
