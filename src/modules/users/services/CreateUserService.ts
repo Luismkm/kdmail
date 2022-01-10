@@ -1,8 +1,10 @@
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
-import User from '../infra/typeorm/entities/User';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import { User } from '../infra/typeorm/entities/User';
+
+import { IHashGenerate } from '../providers/HashProvider/models/IHashGenerate';
+import { ICreateUserRepository } from '../repositories/ICreateUserRepository';
+import { ILoadUserByNameRepository } from '../repositories/ILoadUserByNameRepository';
 
 interface IRequest {
   name: string;
@@ -14,21 +16,24 @@ interface IRequest {
 class CreateUserService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    private loadUserByNameRepository: ILoadUserByNameRepository,
+
+    @inject('UsersRepository')
+    private createUserRepository: ICreateUserRepository,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider,
+    private hashProvider: IHashGenerate,
   ) {}
 
   public async execute({ name, password, role = '' }: IRequest): Promise<User> {
-    const checkUserExists = await this.usersRepository.findByName(name);
+    const checkUserExists = await this.loadUserByNameRepository.load(name);
 
-    if (checkUserExists) {
+    /*  if (checkUserExists) {
       throw new AppError('Name already in use.', 403);
-    }
+    } */
 
-    const hashedPassword = await this.hashProvider.generateHash(password);
-    const createdUser = await this.usersRepository.create({
+    const hashedPassword = await this.hashProvider.hashGenerate(password);
+    const createdUser = await this.createUserRepository.create({
       name,
       password: hashedPassword,
       role,
