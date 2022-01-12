@@ -7,8 +7,7 @@
  - Enviar Emails
  - Gerenciar de tarefas
 
-
-[Mailgo. Web](https://github.com/Luismkm/front-kdmail)
+ Para ver o **client web**, clique aqui: [Mailgo. Web](https://github.com/Luismkm/front-kdmail)
 
 ----
 
