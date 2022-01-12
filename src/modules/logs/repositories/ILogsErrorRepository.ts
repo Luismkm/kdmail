@@ -1,3 +1,3 @@
 export default interface ILogsErrorRepository {
-  create(cod: string, error: string): Promise<void>;
+  create(cod: string, error: string, email: string): Promise<void>;
 }

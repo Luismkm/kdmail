@@ -10,8 +10,12 @@ class LogsErrorRepository implements ILogsErrorRepository {
     this.ormRepository = getRepository(LogError);
   }
 
-  public async create(cod: string, error: string): Promise<void> {
-    const logError = this.ormRepository.create({ cod, error });
+  public async create(
+    cod: string,
+    error: string,
+    email: string,
+  ): Promise<void> {
+    const logError = this.ormRepository.create({ cod, error, email });
 
     await this.ormRepository.save(logError);
 

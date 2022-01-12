@@ -70,7 +70,11 @@ class SendEmailService {
       Object.assign(clientData, { status: 'Sucesso' });
       io.emit('new_client', clientData);
     } catch (error: any) {
-      await this.logsErrorRepository.create(client.cod, error.message);
+      await this.logsErrorRepository.create(
+        client.cod,
+        error.message,
+        client.email,
+      );
       await this.clientsRepository.updateStatusSended(client.cod, 'C');
       Object.assign(clientData, { status: 'Erro' });
       io.emit('new_client', clientData);
@@ -123,7 +127,7 @@ class SendEmailService {
     );
 
     const jobDay = new CronJob(
-      '*/5 25 22 * * *',
+      '*/5 * 21-23 * * *',
       async () => {
         if (inicial > final) {
           jobDay.stop();
