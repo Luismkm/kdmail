@@ -5,7 +5,7 @@
  - Login
  - Crirar lista de envios
  - Enviar Emails
- - CRUD de tarefas
+ - Gerenciar de tarefas
 
 
 [Mailgo. Web](https://github.com/Luismkm/front-kdmail)
