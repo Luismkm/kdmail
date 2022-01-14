@@ -79,6 +79,7 @@ describe('Authenticate User Service', () => {
         password: 'hashed_password',
         role: 'any_role',
         created_at: new Date('11/11/2020'),
+        updated_at: new Date('11/11/2020'),
       },
       token: 'any_token',
     });

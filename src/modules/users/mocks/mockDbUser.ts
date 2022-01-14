@@ -12,6 +12,7 @@ export const mockLoadUserByNameRepository = (): ILoadUserByNameRepository => {
         password: 'hashed_password',
         role: 'any_role',
         created_at: new Date('11/11/2020'),
+        updated_at: new Date('11/11/2020'),
       });
     }
   }
@@ -27,6 +28,7 @@ export const mockCreateUserRepository = (): ICreateUserRepository => {
         password: 'hashed_password',
         role: 'any_role',
         created_at: new Date('11/11/2020'),
+        updated_at: new Date('11/11/2020'),
       });
     }
   }
