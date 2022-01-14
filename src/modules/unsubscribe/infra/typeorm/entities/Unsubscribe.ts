@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn, CreateDateColumn } from 'typeorm';
 
-@Entity('unsubscribe')
+@Entity('unsubscribes')
 class Unsubscribe {
   @PrimaryColumn()
   cod: string;
