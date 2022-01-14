@@ -5,7 +5,7 @@
  - Login
  - Crirar lista de envios
  - Enviar Emails
- - Gerenciar de tarefas
+ - Gerencia tarefas
 
  Para ver o **client web**, clique aqui: [Mailgo. Web](https://github.com/Luismkm/front-kdmail)
 
