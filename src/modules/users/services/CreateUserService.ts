@@ -28,18 +28,17 @@ class CreateUserService {
   public async execute({ name, password, role = '' }: IRequest): Promise<User> {
     const checkUserExists = await this.loadUserByNameRepository.load(name);
 
-    /*  if (checkUserExists) {
-      throw new AppError('Name already in use.', 403);
-    } */
+    if (!checkUserExists) {
+      const hashedPassword = await this.hashProvider.hashGenerate(password);
+      const createdUser = await this.createUserRepository.create({
+        name,
+        password: hashedPassword,
+        role,
+      });
 
-    const hashedPassword = await this.hashProvider.hashGenerate(password);
-    const createdUser = await this.createUserRepository.create({
-      name,
-      password: hashedPassword,
-      role,
-    });
-
-    return createdUser;
+      return createdUser;
+    }
+    throw new AppError('Name already in use.', 403);
   }
 }
 
