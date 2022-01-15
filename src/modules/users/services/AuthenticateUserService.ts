@@ -22,14 +22,14 @@ interface IResponse {
 class AuthenticateUserService {
   constructor(
     @inject('UsersRepository')
-    private loadUser: ILoadUserByNameRepository,
+    private loadUserByNameRepository: ILoadUserByNameRepository,
 
     @inject('HashProvider')
     private hashProvider: IHashCompare,
   ) {}
 
   public async execute({ name, password }: IRequest): Promise<IResponse> {
-    const user = await this.loadUser.load(name);
+    const user = await this.loadUserByNameRepository.load(name);
 
     if (!user) {
       throw new AppError('Incorrect name/password combination.', 401);
