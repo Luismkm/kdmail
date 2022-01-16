@@ -1,22 +1,28 @@
 import { inject, injectable } from 'tsyringe';
-import IClientTokensRepository from '@modules/clients/repositories/IClientTokensRepository';
-import IUnsubscribesRepository from '../repositories/IUnsubscribesRepository';
+import { IFindClientByTokenRepository } from '@modules/clients/repositories/ClientToken/IFindClientByTokenRepository';
+import { ICreateUnsubscribeRepository } from '../repositories/ICreateUnsubscribeRepository';
+import Unsubscribe from '../infra/typeorm/entities/Unsubscribe';
 
 @injectable()
 class CreateUnsubscribeService {
   constructor(
-    @inject('UnsubscribesRepository')
-    private unsubscribesRepository: IUnsubscribesRepository,
-
     @inject('ClientTokensRepository')
-    private clientTokensRepository: IClientTokensRepository,
+    private findClientByTokenRepository: IFindClientByTokenRepository,
+
+    @inject('UnsubscribesRepository')
+    private createUnsubscribeRepository: ICreateUnsubscribeRepository,
   ) {}
 
-  public async execute(token: string): Promise<void> {
-    const client = await this.clientTokensRepository.findToken(token);
+  public async execute(token: string): Promise<Unsubscribe> {
+    const client = await this.findClientByTokenRepository.find(token);
     if (client) {
-      await this.unsubscribesRepository.create(client.client_cod, client.email);
+      const unsubscribe = await this.createUnsubscribeRepository.create(
+        client.client_cod,
+        client.email,
+      );
+      return unsubscribe;
     }
+    return null;
   }
 }
 
