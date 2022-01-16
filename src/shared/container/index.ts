@@ -3,19 +3,19 @@ import { container } from 'tsyringe';
 import '@modules/users/providers';
 import './providers';
 
-import IClientsRepository from '@modules/clients/repositories/IClientsRepository';
+import IClientsRepository from '@modules/clients/repositories/Client/IClientsRepository';
 import ClientsRepository from '@modules/clients/infra/typeorm/repositories/ClientsRepository';
 
-import IClientTokensRepository from '@modules/clients/repositories/IClientTokensRepository';
+import IClientTokensRepository from '@modules/clients/repositories/ClientToken/IClientTokensRepository';
 import ClientTokensRepository from '@modules/clients/infra/typeorm/repositories/ClientTokensRepository';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRerpositories';
+import IUsersRepository from '@modules/users/repositories/IUsersRepositoryInject';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRerpository';
 
 import ITasksRepository from '@modules/tasks/repositories/ITaskRepository';
 import TasksRepository from '@modules/tasks/infra/typeorm/repositories/TasksRepositories';
 
-import IUnsubscribesRepository from '@modules/unsubscribe/repositories/IUnsubscribesRepository';
+import IUnsubscribesRepository from '@modules/unsubscribe/repositories/IUnsubscribeRepositoryInject';
 import UnsubscribesRepository from '@modules/unsubscribe/infra/typeorm/repositories/UnsubscribesRepository';
 
 import ILogsErrorRepository from '@modules/logs/repositories/ILogsErrorRepository';

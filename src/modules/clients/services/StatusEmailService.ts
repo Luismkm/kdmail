@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
-import IClientsRepository from '@modules/clients/repositories/IClientsRepository';
 import IStatusDTO from '../dtos/IFindAllClientsGroupByStatusDTO';
+import IClientsRepository from '../repositories/Client/IClientsRepository';
 
 @injectable()
 class StatusEmailService {

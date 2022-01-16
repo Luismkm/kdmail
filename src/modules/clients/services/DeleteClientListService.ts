@@ -1,6 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-
-import IClientsRepository from '@modules/clients/repositories/IClientsRepository';
+import IClientsRepository from '../repositories/Client/IClientsRepository';
 
 @injectable()
 class DeleteClientListService {
