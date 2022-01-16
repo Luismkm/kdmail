@@ -1,6 +1,6 @@
 import { getRepository, Repository } from 'typeorm';
 
-import IClientTokensRepository from '@modules/clients/repositories/IClientTokensRepository';
+import IClientTokensRepository from '@modules/clients/repositories/ClientToken/IClientTokensRepository';
 
 import ClientToken from '../entities/ClientToken';
 
@@ -20,7 +20,7 @@ class ClientTokensRepository implements IClientTokensRepository {
     return clientToken;
   }
 
-  public async findToken(token: string): Promise<ClientToken | undefined> {
+  public async find(token: string): Promise<ClientToken | undefined> {
     const clientToken = await this.ormRepository.findOne({
       where: { token },
     });
