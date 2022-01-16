@@ -1,6 +1,6 @@
-import IUnsubscribesRepository from '@modules/unsubscribe/repositories/IUnsubscribesRepository';
 import { inject, injectable } from 'tsyringe';
-import IClientsRepository from '../repositories/IClientsRepository';
+import { IFindAllUnsubscribeRepository } from '@modules/unsubscribe/repositories/IFindAllUnsubscribeRepository';
+import IClientsRepository from '../repositories/Client/IClientsRepository';
 
 interface IData {
   cod: string;
@@ -18,7 +18,7 @@ class CreateClientService {
     private clientsRepository: IClientsRepository,
 
     @inject('UnsubscribesRepository')
-    private unsubscribesRepository: IUnsubscribesRepository,
+    private unsubscribesRepository: IFindAllUnsubscribeRepository,
   ) {}
 
   public async execute({ clients }: IRequest): Promise<number> {
