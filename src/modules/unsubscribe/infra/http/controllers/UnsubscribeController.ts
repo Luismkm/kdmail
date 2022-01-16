@@ -4,12 +4,16 @@ import { container } from 'tsyringe';
 
 export default class UnsubscribeController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { token } = request.params;
-
-    const unsubscribe = container.resolve(CreateUnsubscribeService);
-
-    await unsubscribe.execute(token);
-
-    return response.status(204).json();
+    try {
+      const { token } = request.params;
+      const unsubscribeService = container.resolve(CreateUnsubscribeService);
+      const unsubscribe = await unsubscribeService.execute(token);
+      if (unsubscribe) {
+        return response.status(204).json();
+      }
+      return response.status(401).json({ message: 'Token inválido' });
+    } catch (error) {
+      return response.status(500).json({ message: 'Ocorreu um erro interno' });
+    }
   }
 }
