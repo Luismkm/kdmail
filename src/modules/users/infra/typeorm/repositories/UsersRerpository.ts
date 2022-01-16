@@ -1,11 +1,13 @@
 import { getRepository, Repository } from 'typeorm';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import { ICreateUserRepository } from '@modules/users/repositories/ICreateUserRepository';
+import { ICreateUserDTO } from '@modules/users/dtos/ICreateUserDTO';
+import { ILoadUserByNameRepository } from '@modules/users/repositories/ILoadUserByNameRepository';
+import { User } from '../entities/User';
 
-import User from '../entities/User';
-
-class UsersRepository implements IUsersRepository {
+class UsersRepository
+  implements ICreateUserRepository, ILoadUserByNameRepository
+{
   private ormRepository: Repository<User>;
 
   constructor() {
@@ -18,7 +20,7 @@ class UsersRepository implements IUsersRepository {
     return userData;
   }
 
-  public async findByName(name: string): Promise<User | undefined> {
+  public async load(name: string): Promise<User> {
     const user = this.ormRepository.findOne({ where: { name } });
     return user;
   }
