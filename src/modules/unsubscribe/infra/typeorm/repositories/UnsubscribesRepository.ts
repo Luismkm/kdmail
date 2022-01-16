@@ -1,18 +1,23 @@
 import { getRepository, Repository } from 'typeorm';
 
-import IUnsubscribesRepository from '@modules/unsubscribe/repositories/IUnsubscribesRepository';
+import { ICreateUnsubscribeRepository } from '@modules/unsubscribe/repositories/ICreateUnsubscribeRepository';
+import { IFindAllUnsubscribeRepository } from '@modules/unsubscribe/repositories/IFindAllUnsubscribeRepository';
+
 import Unsubscribe from '../entities/Unsubscribe';
 
-class UnsubscribesRepository implements IUnsubscribesRepository {
+class UnsubscribeRepository
+  implements ICreateUnsubscribeRepository, IFindAllUnsubscribeRepository
+{
   private ormRepository: Repository<Unsubscribe>;
 
   constructor() {
     this.ormRepository = getRepository(Unsubscribe);
   }
 
-  async create(cod: string, email: string): Promise<void> {
-    const unsubscribe = this.ormRepository.create({ cod, email });
-    await this.ormRepository.save(unsubscribe);
+  async create(cod: string, email: string): Promise<Unsubscribe> {
+    const unsubscribeData = this.ormRepository.create({ cod, email });
+    const unsubscribe = await this.ormRepository.save(unsubscribeData);
+    return unsubscribe;
   }
 
   async findAllUnsubscribe(): Promise<Unsubscribe[]> {
@@ -21,4 +26,4 @@ class UnsubscribesRepository implements IUnsubscribesRepository {
   }
 }
 
-export default UnsubscribesRepository;
+export default UnsubscribeRepository;
