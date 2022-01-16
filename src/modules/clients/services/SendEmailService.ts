@@ -1,12 +1,13 @@
-import { injectable, inject } from 'tsyringe';
 import path from 'path';
+import { injectable, inject } from 'tsyringe';
+import { CronJob } from 'cron';
+
+import { io } from '@shared/infra/http/app';
 
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
-import IClientsRepository from '@modules/clients/repositories/IClientsRepository';
 import ILogsErrorRepository from '@modules/logs/repositories/ILogsErrorRepository';
-import { CronJob } from 'cron';
-import { io } from '@shared/infra/http/app';
-import IClientTokensRepository from '../repositories/IClientTokensRepository';
+import IClientsRepository from '../repositories/Client/IClientsRepository';
+import IClientTokensRepository from '../repositories/ClientToken/IClientTokensRepository';
 
 interface IRequest {
   emailSubject: string;
