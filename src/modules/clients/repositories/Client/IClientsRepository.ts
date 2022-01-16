@@ -1,6 +1,6 @@
-import ICreateClientDTO from '../dtos/ICreateClientDTO';
-import IStatusDTO from '../dtos/IFindAllClientsGroupByStatusDTO';
-import Client from '../infra/typeorm/entities/Client';
+import ICreateClientDTO from '../../dtos/ICreateClientDTO';
+import IStatusDTO from '../../dtos/IFindAllClientsGroupByStatusDTO';
+import Client from '../../infra/typeorm/entities/Client';
 
 export default interface IClientsRepository {
   findAllClients(numberOfSends: number): Promise<Client[]>;
