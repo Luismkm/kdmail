@@ -9,7 +9,7 @@ interface IRequest {
 }
 
 @injectable()
-class ShowTaskServices {
+class FindAllOpenTaskServices {
   constructor(
     @inject('TasksRepository')
     private tasksRepository: IFindAllOpenTaskRepository,
@@ -22,4 +22,4 @@ class ShowTaskServices {
   }
 }
 
-export default ShowTaskServices;
+export default FindAllOpenTaskServices;

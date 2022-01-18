@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreateTaskServices from '@modules/tasks/services/CreateTaskServices';
-import ShowTaskServices from '@modules/tasks/services/ShowTasksServices';
 import DeleteTaskServices from '@modules/tasks/services/DeleteTaskServices';
+import FindAllOpenTaskServices from '@modules/tasks/services/FindAllOpenTaskServices';
 
 export default class TasksController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -22,7 +22,7 @@ export default class TasksController {
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
-    const tasksList = container.resolve(ShowTaskServices);
+    const tasksList = container.resolve(FindAllOpenTaskServices);
     const tasks = await tasksList.execute();
 
     return response.status(200).json(tasks);
