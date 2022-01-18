@@ -1,9 +1,9 @@
 import ICreateTaskDTO from '../dtos/ICreateTaskDTO';
 import Tasks from '../infra/typeorm/entities/Task';
-import { ICreateTaskRepository } from '../repositories';
+import { ICreateTaskRepository, IDeleteTaskRepository } from '../repositories';
 
 export const mockCreateTaskRepository = (): ICreateTaskRepository => {
-  class CreateTaskRepository implements ICreateTaskRepository {
+  class CreateTaskRepositoryStub implements ICreateTaskRepository {
     async create(data: ICreateTaskDTO): Promise<Tasks> {
       return Promise.resolve({
         id: 'any_id',
@@ -15,5 +15,12 @@ export const mockCreateTaskRepository = (): ICreateTaskRepository => {
       } as Tasks);
     }
   }
-  return new CreateTaskRepository();
+  return new CreateTaskRepositoryStub();
+};
+
+export const mockDeleteTaskRepository = (): IDeleteTaskRepository => {
+  class DeleteTaskServicesStub implements IDeleteTaskRepository {
+    async delete(task_id: string): Promise<void> {}
+  }
+  return new DeleteTaskServicesStub();
 };
