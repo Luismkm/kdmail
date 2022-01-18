@@ -1,11 +1,23 @@
 import { getRepository, Repository } from 'typeorm';
 
-import ITasksRepository from '@modules/tasks/repositories/ITaskRepository';
 import ICreateTaskDTO from '@modules/tasks/dtos/ICreateTaskDTO';
-
+import {
+  ICreateTaskRepository,
+  IDeleteTaskRepository,
+  IFindAllOpenTaskRepository,
+  IUpdateTaskDescriptionRepository,
+  IUpdateTaskStatusRepository,
+} from '@modules/tasks/repositories';
 import Task from '../entities/Task';
 
-class TasksRepository implements ITasksRepository {
+class TasksRepository
+  implements
+    ICreateTaskRepository,
+    IFindAllOpenTaskRepository,
+    IUpdateTaskDescriptionRepository,
+    IUpdateTaskStatusRepository,
+    IDeleteTaskRepository
+{
   private ormRepository: Repository<Task>;
 
   constructor() {
@@ -20,7 +32,7 @@ class TasksRepository implements ITasksRepository {
     return taskData;
   }
 
-  public async findAllOpenTasks(): Promise<Task[]> {
+  public async findAllOpenTask(): Promise<Task[]> {
     const tasksList = await this.ormRepository.find({
       where: [{ status: 'Pendente' }, { status: 'Em andamento' }],
       order: {

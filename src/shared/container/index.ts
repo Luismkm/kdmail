@@ -12,7 +12,7 @@ import ClientTokensRepository from '@modules/clients/infra/typeorm/repositories/
 import IUsersRepository from '@modules/users/repositories/IUsersRepositoryInject';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRerpository';
 
-import ITasksRepository from '@modules/tasks/repositories/ITaskRepository';
+import ITasksRepositoryInject from '@modules/tasks/repositories/ITaskRepositoryInject';
 import TasksRepository from '@modules/tasks/infra/typeorm/repositories/TasksRepositories';
 
 import IUnsubscribesRepository from '@modules/unsubscribe/repositories/IUnsubscribeRepositoryInject';
@@ -36,7 +36,7 @@ container.registerSingleton<IUsersRepository>(
   UsersRepository,
 );
 
-container.registerSingleton<ITasksRepository>(
+container.registerSingleton<ITasksRepositoryInject>(
   'TasksRepository',
   TasksRepository,
 );

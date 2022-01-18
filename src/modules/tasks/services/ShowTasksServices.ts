@@ -1,7 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import Task from '../infra/typeorm/entities/Task';
-
-import ITasksRepository from '../repositories/ITaskRepository';
+import { IFindAllOpenTaskRepository } from '../repositories';
 
 interface IRequest {
   user_id: string;
@@ -13,11 +12,11 @@ interface IRequest {
 class ShowTaskServices {
   constructor(
     @inject('TasksRepository')
-    private tasksRepository: ITasksRepository,
+    private tasksRepository: IFindAllOpenTaskRepository,
   ) {}
 
   public async execute(): Promise<Task[]> {
-    const tasksList = await this.tasksRepository.findAllOpenTasks();
+    const tasksList = await this.tasksRepository.findAllOpenTask();
 
     return tasksList;
   }
