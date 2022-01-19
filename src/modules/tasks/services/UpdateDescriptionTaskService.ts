@@ -1,19 +1,12 @@
 import { injectable, inject } from 'tsyringe';
 import Task from '../infra/typeorm/entities/Task';
-
-import ITasksRepository from '../repositories/ITaskRepository';
-
-interface IRequest {
-  user_id: string;
-  description: string;
-  status: string;
-}
+import { IUpdateTaskDescriptionRepository } from '../repositories';
 
 @injectable()
 export default class UpdateDescriptionTaskService {
   constructor(
     @inject('TasksRepository')
-    private tasksRepository: ITasksRepository,
+    private tasksRepository: IUpdateTaskDescriptionRepository,
   ) {}
 
   public async execute(task_id: string, description: string): Promise<Task> {
