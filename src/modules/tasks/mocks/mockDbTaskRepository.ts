@@ -4,6 +4,7 @@ import {
   ICreateTaskRepository,
   IDeleteTaskRepository,
   IFindAllOpenTaskRepository,
+  IUpdateTaskDescriptionRepository,
 } from '../repositories';
 
 export const mockCreateTaskRepository = (): ICreateTaskRepository => {
@@ -54,3 +55,25 @@ export const mockFindAllOpenTaskRepository = (): IFindAllOpenTaskRepository => {
   }
   return new FindAllOpenTaskRepositoryStub();
 };
+
+export const mockUpdateTaskDescriptionRepository =
+  (): IUpdateTaskDescriptionRepository => {
+    class UpdateTaskDescriptionRepositoryStub
+      implements IUpdateTaskDescriptionRepository
+    {
+      async updateDescription(
+        task_id: string,
+        description: string,
+      ): Promise<Tasks> {
+        return Promise.resolve({
+          id: 'any_id',
+          user_id: 'any_user_id',
+          description: 'any_description',
+          status: 'any_status',
+          created_at: new Date('11/11/2020'),
+          updated_at: new Date('11/11/2020'),
+        } as Tasks);
+      }
+    }
+    return new UpdateTaskDescriptionRepositoryStub();
+  };
