@@ -88,35 +88,35 @@ class SendEmailService {
   }: IRequest): Promise<void> {
     const clients = await this.clientsRepository.findAllClients();
 
-    let inicial = 0;
-    const final = clients.length - 1;
+    let currentPositionQueue = 0;
+    const lastPositionQueue = clients.length - 1;
 
     const jobNight = new CronJob(
       '*/5 58 12 * * *',
       async () => {
-        if (inicial > final) {
+        if (currentPositionQueue > lastPositionQueue) {
           jobNight.stop();
         } else {
           let clientToken = await this.clientTokensRepository.findTokenByCod(
-            clients[inicial].cod,
+            clients[currentPositionQueue].cod,
           );
 
           if (!clientToken) {
             clientToken = await this.clientTokensRepository.generate(
-              clients[inicial].cod,
-              clients[inicial].email,
+              clients[currentPositionQueue].cod,
+              clients[currentPositionQueue].email,
             );
           }
 
           const { token } = clientToken;
 
           await this.handleSend(
-            clients[inicial],
+            clients[currentPositionQueue],
             emailSubject,
             linkImgBanner,
             token,
           );
-          inicial += 1;
+          currentPositionQueue += 1;
         }
       },
       null,
@@ -127,29 +127,29 @@ class SendEmailService {
     const jobDay = new CronJob(
       '*/5 * 21-23 * * *',
       async () => {
-        if (inicial > final) {
+        if (currentPositionQueue > lastPositionQueue) {
           jobDay.stop();
         } else {
           let clientToken = await this.clientTokensRepository.findTokenByCod(
-            clients[inicial].cod,
+            clients[currentPositionQueue].cod,
           );
 
           if (!clientToken) {
             clientToken = await this.clientTokensRepository.generate(
-              clients[inicial].cod,
-              clients[inicial].email,
+              clients[currentPositionQueue].cod,
+              clients[currentPositionQueue].email,
             );
           }
 
           const { token } = clientToken;
 
           await this.handleSend(
-            clients[inicial],
+            clients[currentPositionQueue],
             emailSubject,
             linkImgBanner,
             token,
           );
-          inicial += 1;
+          currentPositionQueue += 1;
         }
       },
       null,
