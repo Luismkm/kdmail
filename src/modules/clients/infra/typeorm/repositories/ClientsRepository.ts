@@ -23,10 +23,9 @@ class ClientsRepository implements IClientsRepository {
     return null;
   }
 
-  public async findAllClients(numberOfSends: number): Promise<Client[]> {
+  public async findAllClients(): Promise<Client[]> {
     const clients = await this.ormRepository.find({
       where: { sended: 'N' },
-      take: numberOfSends,
     });
     return clients;
   }

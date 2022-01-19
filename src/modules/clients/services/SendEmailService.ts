@@ -85,11 +85,8 @@ class SendEmailService {
   public async execute({
     emailSubject,
     linkImgBanner,
-    numberOfSends,
   }: IRequest): Promise<void> {
-    const clients = await this.clientsRepository.findAllClients(
-      Number(numberOfSends),
-    );
+    const clients = await this.clientsRepository.findAllClients();
 
     let inicial = 0;
     const final = clients.length - 1;
