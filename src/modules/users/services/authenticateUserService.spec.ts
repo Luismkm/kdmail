@@ -66,7 +66,7 @@ describe('Authenticate User Service', () => {
     await expect(response).rejects.toBeInstanceOf(AppError);
   });
 
-  test('seila', async () => {
+  test('should return a user on success', async () => {
     const { sut } = makeSut();
     const response = await sut.execute({
       name: 'any_name',
