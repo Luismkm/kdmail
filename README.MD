@@ -25,7 +25,7 @@
 - TypeORM
 - PostgreSQL
 - Migrations
-- Jest (em breve ;))
+- Jest
 - Yarn
 - Git
 - Bcrypt
